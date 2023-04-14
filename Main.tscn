@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://c7gfwbaug0vct"]
+[gd_scene load_steps=13 format=3 uid="uid://c7gfwbaug0vct"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_1jmkc"]
 [ext_resource type="PackedScene" uid="uid://dm7ggjh8fexve" path="res://Player.tscn" id="1_177xb"]
 [ext_resource type="PackedScene" uid="uid://bl23sanu1ljmc" path="res://Mob.tscn" id="2_trf27"]
+[ext_resource type="FontFile" uid="uid://cyl1ase7kawm2" path="res://fonts/Montserrat-Medium.ttf" id="4_eikc5"]
+[ext_resource type="Script" path="res://Label.gd" id="5_v0hb6"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0e5ul"]
 
@@ -24,6 +26,10 @@ _data = {
 "tilts": PackedFloat32Array(0, 0, 0, 0, 0)
 }
 point_count = 5
+
+[sub_resource type="Theme" id="Theme_gebvp"]
+default_font = ExtResource("4_eikc5")
+default_font_size = 22
 
 [node name="Main" type="Node"]
 script = ExtResource("1_1jmkc")
@@ -83,4 +89,32 @@ curve = SubResource("Curve3D_71yhf")
 [node name="SpawnLocation" type="PathFollow3D" parent="SpawnPath"]
 transform = Transform3D(-0.0218372, 0, 0.999762, 0, 1, 0, -0.999762, 0, -0.0218372, -10.476, 1, -9.205)
 
+[node name="UserInterface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = SubResource("Theme_gebvp")
+
+[node name="Label" type="Label" parent="UserInterface"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 89.0
+offset_bottom = 46.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Score: 0"
+script = ExtResource("5_v0hb6")
+
+[node name="Retry" type="ColorRect" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.376471)
+
+[connection signal="hit" from="Player" to="." method="_on_player_hit"]
+[connection signal="hit" from="Player" to="Player" method="_on_hit"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
